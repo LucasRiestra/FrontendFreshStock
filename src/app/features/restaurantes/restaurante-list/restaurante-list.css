@@ -1,0 +1,98 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.restaurante-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.restaurante-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-header-image {
+    height: 120px;
+    background: linear-gradient(135deg, #3f51b5 0%, #7986cb 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.store-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+    color: #666;
+}
+
+.info-row mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.status-chip {
+    margin-top: 16px;
+}
+
+.active-chip {
+    background-color: #e8f5e9 !important;
+    color: #2e7d32 !important;
+}
+
+.inactive-chip {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+}
+
+.no-data {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #888;
+}
+
+.no-data mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}

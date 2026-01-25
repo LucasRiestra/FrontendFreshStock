@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,8 +10,15 @@ import { RouterModule } from '@angular/router';
   styleUrl: './navbar.css',
 })
 export class Navbar {
+  @Output() toggleMenu = new EventEmitter<void>();
+
+  toggleSidebar() {
+    this.toggleMenu.emit();
+  }
+
+  private authService = inject(AuthService);
+
   logout() {
-    console.log('Logout clicked');
-    // TODO: Implement AuthService logout
+    this.authService.logout();
   }
 }

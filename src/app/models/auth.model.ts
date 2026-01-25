@@ -8,6 +8,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   rol: 'Admin' | 'Gerente' | 'Empleado';
+  restauranteId: number | null;
 }
 
 export interface Usuario {

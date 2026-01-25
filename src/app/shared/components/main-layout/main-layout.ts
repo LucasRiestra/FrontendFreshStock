@@ -11,5 +11,13 @@ import { Sidebar } from '../sidebar/sidebar';
   styleUrl: './main-layout.css',
 })
 export class MainLayout {
+  isSidebarOpen = false;
 
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+  }
 }

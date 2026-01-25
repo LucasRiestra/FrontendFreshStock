@@ -4,6 +4,7 @@ export interface Proveedor {
   telefono: string;
   email: string;
   contacto: string;
+  direccion?: string;
   activo: boolean;
 }
 
@@ -12,4 +13,5 @@ export interface CreateProveedor {
   telefono: string;
   email: string;
   contacto: string;
+  direccion?: string;
 }

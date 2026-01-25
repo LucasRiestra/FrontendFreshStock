@@ -1,0 +1,48 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.categoria-card {
+    transition: transform 0.2s;
+}
+
+.categoria-card:hover {
+    transform: translateY(-3px);
+}
+
+.cat-avatar {
+    background-color: #e8eaf6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3f51b5;
+}
+
+.no-data {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #888;
+}
+
+@media (max-width: 600px) {
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

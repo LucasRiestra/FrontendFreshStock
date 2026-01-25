@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   // Rutas públicas
@@ -14,14 +15,10 @@ export const routes: Routes = [
   // Rutas protegidas
   {
     path: '',
-    // canActivate: [AuthGuard], // TODO: Implement Guard
+    canActivate: [authGuard], 
     loadComponent: () => import('./shared/components/main-layout/main-layout').then(m => m.MainLayout),
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { 
-        path: 'dashboard', 
-        loadChildren: () => import('./features/dashboard/dashboard-module').then(m => m.DashboardModule) 
-      },
+      { path: '', redirectTo: 'restaurantes', pathMatch: 'full' },
       { 
         path: 'restaurantes', 
         loadChildren: () => import('./features/restaurantes/restaurantes-module').then(m => m.RestaurantesModule) 

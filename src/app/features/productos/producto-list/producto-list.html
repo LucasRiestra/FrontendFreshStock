@@ -1,1 +1,49 @@
-<p>producto-list works!</p>
+<div class="header-section">
+    <h1>Productos</h1>
+    <button mat-raised-button color="primary">
+        <mat-icon>add</mat-icon> Nuevo Producto
+    </button>
+</div>
+
+<div class="loader-container" *ngIf="isLoading">
+    <p>Cargando productos...</p>
+</div>
+
+<div class="cards-grid" *ngIf="!isLoading">
+    <mat-card class="producto-card" *ngFor="let prod of productos">
+        <mat-card-header>
+            <mat-card-title>{{ prod.nombre }}</mat-card-title>
+            <mat-card-subtitle>{{ prod.costoUnitario }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <p class="description">{{ prod.unidadMedida }}</p>
+
+            <div class="meta-info">
+                <mat-chip-set>
+                    <mat-chip class="category-chip">
+                        <mat-icon matChipAvatar>label</mat-icon>
+                        Cat: {{ prod.categoriaId }}
+                    </mat-chip>
+                    <mat-chip [class.low-stock]="prod.stockMinimo > 100">
+                        ${{ prod.costoUnitario }}
+                    </mat-chip>
+                </mat-chip-set>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-icon-button color="primary">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+    <div class="no-data" *ngIf="productos.length === 0">
+        <mat-icon>inventory_2</mat-icon>
+        <p>No se encontraron productos.</p>
+    </div>
+</div>

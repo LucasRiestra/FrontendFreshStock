@@ -4,7 +4,7 @@
     width: 100vw;
     overflow: hidden;
     background-color: #f5f7fa;
-    /* Light grey background for app */
+    position: relative;
 }
 
 .app-sidebar {
@@ -14,7 +14,42 @@
     border-right: 1px solid #eaeaea;
     display: flex;
     flex-direction: column;
-    z-index: 10;
+    z-index: 20;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile First Adjustments */
+@media (max-width: 768px) {
+    .app-sidebar {
+        position: absolute;
+        height: 100%;
+        transform: translateX(-100%);
+        /* Hidden by default */
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .app-sidebar.open {
+        transform: translateX(0);
+        /* Valid syntax for slide in */
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 15;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 .main-content {
@@ -22,7 +57,6 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
-    /* Prevent flex child overflow */
     overflow: hidden;
 }
 

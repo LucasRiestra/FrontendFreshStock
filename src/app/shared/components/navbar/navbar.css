@@ -8,6 +8,27 @@
     font-size: 1.25rem;
     font-weight: 700;
     color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #555;
+    cursor: pointer;
+    padding: 4px 8px;
+    display: none;
+    /* Hidden by default on desktop */
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        /* Show on mobile */
+    }
 }
 
 .navbar-actions {
@@ -39,7 +60,13 @@
 
 .btn-logout:hover {
     background-color: #fce4ec;
-    /* Light pink hover for logout */
     color: #c2185b;
     border-color: #c2185b;
+}
+
+/* Hide username text on small screens to save space */
+@media (max-width: 500px) {
+    .user-name {
+        display: none;
+    }
 }

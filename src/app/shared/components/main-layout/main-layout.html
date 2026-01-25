@@ -1,8 +1,9 @@
 <div class="app-container">
-    <app-sidebar class="app-sidebar"></app-sidebar>
+    <div class="sidebar-overlay" [class.open]="isSidebarOpen" (click)="closeSidebar()"></div>
+    <app-sidebar class="app-sidebar" [class.open]="isSidebarOpen"></app-sidebar>
 
     <div class="main-content">
-        <app-navbar class="app-navbar"></app-navbar>
+        <app-navbar class="app-navbar" (toggleMenu)="toggleSidebar()"></app-navbar>
 
         <main class="content-wrapper">
             <router-outlet></router-outlet>
