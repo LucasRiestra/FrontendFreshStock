@@ -1,0 +1,46 @@
+# Plan de Implementación - FrontendFreshStock
+
+## Objetivo
+Crear e inicializar un nuevo proyecto de Angular llamado `FrontendFreshStock` con la estructura y dependencias definidas en [FRONTEND_PLANNING.md](file:///C:/Users/lucas/Documents/GitHub/FreshStock/docs/FRONTEND_PLANNING.md).
+
+## Revisión del Usuario Requerida
+> [!IMPORTANT]
+> **Permisos de Carpeta**: Debido a restricciones de seguridad, es posible que no pueda ejecutar comandos directamente en `Documents/GitHub`.
+> Intentaré crear el proyecto en la ruta solicitada. Si falla, lo crearé en mi directorio de trabajo (`scratch`) y tendrás que moverlo manualmente.
+
+## Cambios Propuestos
+
+### Inicialización del Proyecto
+1.  **Crear Proyecto**: Ejecutar `ng new FrontendFreshStock` con routing habilitado y CSS estándar.
+2.  **Instalar Dependencias**:
+    - `@angular/material`
+    - `@fortawesome/fontawesome-free`
+    - `ngx-toastr`
+    - `chart.js`, `ng2-charts` (Opcional, pero sugerido)
+
+### Estructura de Directorios (Scaffolding)
+Crear la siguiente estructura dentro de `src/app/`:
+
+#### [NEW] Estructura Base
+- `src/app/core/` (services, guards, interceptors)
+- `src/app/shared/` (components, pipes)
+- `src/app/features/` (auth, dashboard, restaurantes, categorias, proveedores, productos, inventario, usuarios)
+- `src/environments/` (environment.ts prod y dev)
+
+### Archivos Clave
+#### [NEW] Core Module
+Crear `core.module.ts` para servicios singleton.
+
+#### [NEW] Shared Module
+Crear `shared.module.ts` para exportar componentes comunes.
+
+## Plan de Verificación
+
+### Pruebas Automatizadas
+- Ejecutar `ng test` para asegurar que el proyecto base pasa los tests iniciales.
+- Ejecutar `ng build` para verificar que la compilación es correcta.
+
+### Verificación Manual
+- Iniciar el servidor con `npm start` (o `ng serve`).
+- Abrir el navegador (si es posible) y verificar que la página de inicio de Angular carga.
+- Verificar que la estructura de carpetas coincide con el plan.
