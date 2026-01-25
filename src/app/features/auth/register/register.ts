@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { Restaurante } from '../../../models/restaurante.model';
+import { UserRole } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-register',
@@ -39,14 +40,14 @@ export class Register implements OnInit {
   isLoading = false;
   restaurantes: Restaurante[] = [];
 
-  roles = ['Admin', 'Gerente', 'Empleado'];
+  roles = Object.values(UserRole);
 
   constructor() {
     this.registerForm = this.fb.group({
       nombre: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      rol: ['Empleado', [Validators.required]],
+      rol: [UserRole.Empleado, [Validators.required]],
       restauranteId: [null]
     });
   }

@@ -7,6 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { RestauranteService } from '../restaurante.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Restaurante } from '../../../models/restaurante.model';
+import { UserRole } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-restaurante-list',
@@ -27,7 +28,7 @@ export class RestauranteList implements OnInit {
 
   restaurantes: Restaurante[] = [];
   isLoading = true;
-  userRole: string | undefined;
+  userRole: UserRole | undefined;
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -39,7 +40,7 @@ export class RestauranteList implements OnInit {
 
   loadRestaurantes(userRestauranteId: number | null | undefined): void {
     console.log('Loading restaurants. UserRole:', this.userRole, 'RestauranteId:', userRestauranteId);
-    if (this.userRole !== 'Admin' && userRestauranteId) {
+    if (this.userRole !== UserRole.Admin && userRestauranteId) {
       // Si no es Admin y tiene ID, llamamos al endpoint específico por ID
       this.restauranteService.getById(userRestauranteId).subscribe({
         next: (data) => {

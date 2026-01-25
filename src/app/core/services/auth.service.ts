@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { LoginRequest, LoginResponse, Usuario, RegisterRequest } from '../../models/auth.model';
+import { LoginRequest, LoginResponse, RegisterRequest } from '../../models/auth.model';
+import { Usuario, UserRole } from '../../models/usuario.model';
 import { Router } from '@angular/router';
 
 @Injectable({

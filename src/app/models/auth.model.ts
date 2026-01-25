@@ -1,3 +1,5 @@
+import { Usuario, UserRole } from './usuario.model';
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -7,18 +9,11 @@ export interface RegisterRequest {
   nombre: string;
   email: string;
   password: string;
-  rol: 'Admin' | 'Gerente' | 'Empleado';
+  rol: UserRole;
   restauranteId: number | null;
 }
 
-export interface Usuario {
-  id: number;
-  restauranteId: number | null;
-  nombre: string;
-  email: string;
-  rol: string;
-  activo: boolean;
-}
+// Redundant Usuario interface removed as it's now imported
 
 export interface LoginResponse {
   accessToken: string;
