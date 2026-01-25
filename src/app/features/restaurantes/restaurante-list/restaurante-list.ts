@@ -8,6 +8,7 @@ import { RestauranteService } from '../restaurante.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Restaurante } from '../../../models/restaurante.model';
 import { UserRole } from '../../../models/usuario.model';
+import { ActiveStatusPipe } from '../../../shared/pipes';
 
 @Component({
   selector: 'app-restaurante-list',
@@ -17,7 +18,8 @@ import { UserRole } from '../../../models/usuario.model';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    ActiveStatusPipe
   ],
   templateUrl: './restaurante-list.html',
   styleUrl: './restaurante-list.css',

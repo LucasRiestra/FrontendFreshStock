@@ -29,7 +29,7 @@
             <div class="status-chip">
                 <mat-chip-set>
                     <mat-chip [class.active-chip]="res.activo" [class.inactive-chip]="!res.activo">
-                        {{ res.activo ? 'Activo' : 'Inactivo' }}
+                        {{ res.activo | activeStatus }}
                     </mat-chip>
                 </mat-chip-set>
             </div>

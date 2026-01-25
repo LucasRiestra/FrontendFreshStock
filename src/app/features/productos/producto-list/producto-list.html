@@ -13,7 +13,7 @@
     <mat-card class="producto-card" *ngFor="let prod of productos">
         <mat-card-header>
             <mat-card-title>{{ prod.nombre }}</mat-card-title>
-            <mat-card-subtitle>{{ prod.costoUnitario }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ prod.costoUnitario | currencyFormat }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -26,7 +26,7 @@
                         Cat: {{ prod.categoriaId }}
                     </mat-chip>
                     <mat-chip [class.low-stock]="prod.stockMinimo > 100">
-                        ${{ prod.costoUnitario }}
+                        {{ prod.costoUnitario | currencyFormat }}
                     </mat-chip>
                 </mat-chip-set>
             </div>

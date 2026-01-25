@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { ProductoService } from '../producto.service';
 import { Producto } from '../../../models/producto.model';
+import { CurrencyFormatPipe } from '../../../shared/pipes';
 
 @Component({
   selector: 'app-producto-list',
@@ -15,7 +16,8 @@ import { Producto } from '../../../models/producto.model';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    CurrencyFormatPipe
   ],
   templateUrl: './producto-list.html',
   styleUrl: './producto-list.css',
