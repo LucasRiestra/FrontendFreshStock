@@ -1,1 +1,63 @@
-<p>usuario-list works!</p>
+<div class="header-section">
+    <h1>Gestión de Usuarios</h1>
+    <button mat-raised-button color="primary" *ngIf="canCreate" (click)="openCreateModal()">
+        <mat-icon>person_add</mat-icon> Nuevo Usuario
+    </button>
+</div>
+
+<div class="loader-container" *ngIf="isLoading">
+    <p>Cargando usuarios...</p>
+</div>
+
+<div class="table-container mat-elevation-z2" *ngIf="!isLoading">
+    <table mat-table [dataSource]="usuarios">
+
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombreUsuario}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email || 'N/A'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef> Rol </th>
+            <td mat-cell *matCellDef="let element">
+                <span class="role-badge" [ngClass]="'role-' + element.rol">
+                    {{ element.rol === 1 ? 'Admin' : element.rol === 2 ? 'Gerente' : 'Empleado' }}
+                </span>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="activo">
+            <th mat-header-cell *matHeaderCellDef> Estado </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-icon [color]="element.activo ? 'primary' : 'warn'">
+                    {{element.activo ? 'check_circle' : 'cancel'}}
+                </mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef> Acciones </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" *ngIf="canCreate">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" *ngIf="canCreate">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="no-data" *ngIf="usuarios.length === 0">
+        <mat-icon>info</mat-icon>
+        <p>No se encontraron usuarios para este restaurante.</p>
+    </div>
+</div>

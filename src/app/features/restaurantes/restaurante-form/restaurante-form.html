@@ -1,0 +1,40 @@
+<div class="form-container">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">storefront</mat-icon>
+            <mat-card-title>Nuevo Restaurante</mat-card-title>
+            <mat-card-subtitle>Registre un nuevo establecimiento en el sistema</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="restauranteForm" (ngSubmit)="onSubmit()" class="restaurante-form">
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Nombre del Restaurante</mat-label>
+                    <input matInput formControlName="nombre" placeholder="Ej: Pizzería Roma">
+                    <mat-error *ngIf="restauranteForm.get('nombre')?.hasError('required')">El nombre es
+                        requerido</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput formControlName="direccion" placeholder="Calle, Número, Ciudad">
+                    <mat-error *ngIf="restauranteForm.get('direccion')?.hasError('required')">La dirección es
+                        requerida</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Teléfono (Opcional)</mat-label>
+                    <input matInput formControlName="telefono" placeholder="Ej: +34 600 000 000">
+                </mat-form-field>
+
+                <div class="actions">
+                    <button mat-button type="button" routerLink="/restaurantes" [disabled]="isLoading">Cancelar</button>
+                    <button mat-raised-button color="primary" type="submit"
+                        [disabled]="restauranteForm.invalid || isLoading">
+                        {{ isLoading ? 'Guardando...' : 'Crear Restaurante' }}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

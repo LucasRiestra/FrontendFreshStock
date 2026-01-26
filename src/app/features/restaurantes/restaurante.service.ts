@@ -26,6 +26,13 @@ export class RestauranteService {
     );
   }
 
+  getMisRestaurantes(): Observable<Restaurante[]> {
+    console.log('RestauranteService.getMisRestaurantes called at:', `${this.apiUrl}/mis-restaurantes`);
+    return this.http.get<Restaurante[]>(`${this.apiUrl}/mis-restaurantes`).pipe(
+      tap(data => console.log('RestauranteService.getMisRestaurantes response:', data))
+    );
+  }
+
   create(restaurante: CreateRestaurante): Observable<Restaurante> {
     return this.http.post<Restaurante>(this.apiUrl, restaurante);
   }

@@ -1,0 +1,62 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.role-1 {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+/* Admin */
+.role-2 {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* Gerente */
+.role-3 {
+    background-color: #f1f8e9;
+    color: #388e3c;
+}
+
+/* Empleado */
+
+.no-data {
+    padding: 40px;
+    text-align: center;
+    color: #666;
+}
+
+.no-data mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}

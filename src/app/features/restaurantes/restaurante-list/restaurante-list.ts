@@ -7,7 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { RestauranteService } from '../restaurante.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Restaurante } from '../../../models/restaurante.model';
-import { UserRole } from '../../../models/usuario.model';
+import { Usuario, UserRole, PermisoUsuario } from '../../../models/usuario.model';
 import { ActiveStatusPipe } from '../../../shared/pipes';
 
 @Component({
@@ -30,32 +30,24 @@ export class RestauranteList implements OnInit {
 
   restaurantes: Restaurante[] = [];
   isLoading = true;
-  userRole: UserRole | undefined;
+  isGlobalAdmin = false;
+  userPermissions: PermisoUsuario | null = null;
+  currentUser: Usuario | null = null;
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
-      console.log('Current user in RestauranteList:', user);
-      this.userRole = user?.rol;
-      this.loadRestaurantes(user?.restauranteId);
+      this.currentUser = user;
+    });
+
+    this.authService.permissions$.subscribe(() => {
+      this.isGlobalAdmin = this.authService.isGlobalAdmin();
+      this.loadRestaurantes();
     });
   }
 
-  loadRestaurantes(userRestauranteId: number | null | undefined): void {
-    console.log('Loading restaurants. UserRole:', this.userRole, 'RestauranteId:', userRestauranteId);
-    if (this.userRole !== UserRole.Admin && userRestauranteId) {
-      // Si no es Admin y tiene ID, llamamos al endpoint específico por ID
-      this.restauranteService.getById(userRestauranteId).subscribe({
-        next: (data) => {
-          this.restaurantes = [data];
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error('Error loading specific restaurant', err);
-          this.isLoading = false;
-        }
-      });
-    } else {
-      // Si es Admin, traemos todos
+  loadRestaurantes(): void {
+    if (this.isGlobalAdmin) {
+      // Si es Admin global, traemos todos
       this.restauranteService.getAll().subscribe({
         next: (data) => {
           this.restaurantes = data;
@@ -63,6 +55,18 @@ export class RestauranteList implements OnInit {
         },
         error: (err) => {
           console.error('Error loading all restaurants', err);
+          this.isLoading = false;
+        }
+      });
+    } else {
+      // Si no es Admin global, traemos sus restaurantes
+      this.restauranteService.getMisRestaurantes().subscribe({
+        next: (data) => {
+          this.restaurantes = data;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error loading my restaurants', err);
           this.isLoading = false;
         }
       });

@@ -1,6 +1,6 @@
 <div class="header-section">
     <h1>Restaurantes</h1>
-    <button mat-raised-button color="primary" *ngIf="userRole === 'Admin'">
+    <button mat-raised-button color="primary" *ngIf="isGlobalAdmin">
         <mat-icon>add</mat-icon> Nuevo Restaurante
     </button>
 </div>
@@ -37,14 +37,25 @@
 
         <mat-card-actions align="end">
             <button mat-button color="primary">VER DETALLE</button>
-            <button mat-icon-button color="accent" *ngIf="userRole === 'Admin'">
+            <button mat-icon-button color="accent" *ngIf="isGlobalAdmin">
                 <mat-icon>edit</mat-icon>
             </button>
         </mat-card-actions>
     </mat-card>
 
-    <div class="no-data" *ngIf="restaurantes.length === 0">
-        <mat-icon>info</mat-icon>
-        <p>No se encontraron restaurantes.</p>
+    <div class="empty-state-container" *ngIf="restaurantes.length === 0">
+        <div class="no-data-content" *ngIf="!isGlobalAdmin">
+            <mat-icon>info</mat-icon>
+            <p>No se encontraron restaurantes asignados. Contacte a su administrador.</p>
+        </div>
+
+        <div class="welcome-card" *ngIf="isGlobalAdmin">
+            <mat-icon class="welcome-icon">storefront</mat-icon>
+            <h2>¡Bienvenido a FreshStock!</h2>
+            <p>Para comenzar a gestionar tu inventario, primero debes crear un restaurante.</p>
+            <button mat-raised-button color="primary" size="large" routerLink="nuevo">
+                <mat-icon>add</mat-icon> CREAR MI PRIMER RESTAURANTE
+            </button>
+        </div>
     </div>
 </div>

@@ -6,10 +6,14 @@
 </div>
 
 <div class="navbar-actions">
+    <div class="restaurant-context" *ngIf="restaurantName">
+        <i class="fas fa-store"></i>
+        <span>{{ restaurantName }}</span>
+    </div>
     <div class="user-profile">
-        <span class="user-name">Usuario Demo</span>
-        <button class="btn-logout" (click)="logout()">
-            <i class="fas fa-sign-out-alt"></i> Salir
+        <span class="user-name">{{ userName }}</span>
+        <button class="btn-logout" (click)="logout()" title="Cerrar Sesión">
+            <i class="fas fa-sign-out-alt"></i>
         </button>
     </div>
 </div>

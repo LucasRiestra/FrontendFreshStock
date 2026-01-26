@@ -1,0 +1,33 @@
+<div class="selector-container">
+    <mat-card class="selector-card">
+        <mat-card-header>
+            <mat-card-title>Seleccionar Restaurante</mat-card-title>
+            <mat-card-subtitle>Por favor, elija el restaurante con el que desea trabajar hoy</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <div class="loader" *ngIf="isLoading">
+                Cargando sus opciones...
+            </div>
+
+            <div class="restaurantes-list" *ngIf="!isLoading">
+                <button mat-stroked-button *ngFor="let res of restaurantes"
+                    (click)="selectRestaurante(res.restauranteId)" class="res-item">
+                    <mat-icon>restaurant</mat-icon>
+                    <span>{{ res.nombreRestaurante }}</span>
+                    <span class="role-badge">{{ res.rol === 1 ? 'Admin' : res.rol === 2 ? 'Gerente' : 'Empleado'
+                        }}</span>
+                </button>
+
+                <div class="no-restaurants" *ngIf="restaurantes.length === 0">
+                    <mat-icon>warning</mat-icon>
+                    <p>No tiene restaurantes asignados. Contacte a su administrador.</p>
+                </div>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-button (click)="authService.logout()">Cerrar Sesión</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

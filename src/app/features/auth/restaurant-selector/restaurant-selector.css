@@ -1,0 +1,55 @@
+.selector-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.selector-card {
+    max-width: 500px;
+    width: 100%;
+}
+
+.restaurantes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.res-item {
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0 20px !important;
+    font-size: 1.1rem !important;
+}
+
+.res-item mat-icon {
+    margin-right: 15px;
+}
+
+.role-badge {
+    margin-left: auto;
+    font-size: 0.8rem;
+    background: #eee;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #666;
+}
+
+.no-restaurants {
+    text-align: center;
+    padding: 30px;
+    color: #f44336;
+}
+
+.no-restaurants mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+}

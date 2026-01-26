@@ -19,6 +19,10 @@ export class CategoriaService {
     return this.http.post<Categoria>(this.apiUrl, categoria);
   }
 
+  createAndAssign(categoria: CreateCategoria, restauranteId: number): Observable<Categoria> {
+    return this.http.post<Categoria>(`${this.apiUrl}/crear-y-asignar/${restauranteId}`, categoria);
+  }
+
   update(id: number, categoria: Partial<Categoria>): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, categoria);
   }

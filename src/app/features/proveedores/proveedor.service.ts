@@ -19,6 +19,10 @@ export class ProveedorService {
     return this.http.post<Proveedor>(this.apiUrl, proveedor);
   }
 
+  createAndAssign(proveedor: CreateProveedor, restauranteId: number): Observable<Proveedor> {
+    return this.http.post<Proveedor>(`${this.apiUrl}/crear-y-asignar/${restauranteId}`, proveedor);
+  }
+
   update(id: number, proveedor: Partial<Proveedor>): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, proveedor);
   }

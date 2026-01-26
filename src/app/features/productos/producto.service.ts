@@ -15,6 +15,10 @@ export class ProductoService {
     return this.http.get<Producto[]>(this.apiUrl);
   }
 
+  getByRestaurante(restauranteId: number): Observable<Producto[]> {
+    return this.http.get<Producto[]>(`${this.apiUrl}/restaurante/${restauranteId}`);
+  }
+
   getById(id: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }

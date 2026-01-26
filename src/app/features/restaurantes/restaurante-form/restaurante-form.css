@@ -1,0 +1,32 @@
+.form-container {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-card {
+    max-width: 600px;
+    width: 100%;
+}
+
+.restaurante-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+mat-card-header {
+    margin-bottom: 24px;
+}

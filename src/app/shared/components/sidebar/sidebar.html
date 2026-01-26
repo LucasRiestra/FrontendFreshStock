@@ -11,27 +11,32 @@
         <span>Restaurantes</span>
     </a>
 
-    <a routerLink="/categorias" routerLinkActive="active" class="nav-item">
+    <a routerLink="/categorias" routerLinkActive="active" class="nav-item"
+        *ngIf="isGlobalAdmin || permission?.puedeCrearCategorias">
         <i class="fas fa-tags"></i>
         <span>Categorías</span>
     </a>
 
-    <a routerLink="/proveedores" routerLinkActive="active" class="nav-item">
+    <a routerLink="/proveedores" routerLinkActive="active" class="nav-item"
+        *ngIf="isGlobalAdmin || permission?.puedeCrearProveedores">
         <i class="fas fa-truck"></i>
         <span>Proveedores</span>
     </a>
 
-    <a routerLink="/productos" routerLinkActive="active" class="nav-item">
+    <a routerLink="/productos" routerLinkActive="active" class="nav-item"
+        *ngIf="isGlobalAdmin || permission?.puedeGestionarInventario">
         <i class="fas fa-box-open"></i>
         <span>Productos</span>
     </a>
 
-    <a routerLink="/inventario" routerLinkActive="active" class="nav-item">
+    <a routerLink="/inventario" routerLinkActive="active" class="nav-item"
+        *ngIf="isGlobalAdmin || permission?.puedeGestionarInventario">
         <i class="fas fa-clipboard-list"></i>
         <span>Inventario</span>
     </a>
 
-    <a routerLink="/usuarios" routerLinkActive="active" class="nav-item">
+    <a routerLink="/usuarios" routerLinkActive="active" class="nav-item"
+        *ngIf="isGlobalAdmin || permission?.puedeCrearUsuarios">
         <i class="fas fa-users"></i>
         <span>Usuarios</span>
     </a>

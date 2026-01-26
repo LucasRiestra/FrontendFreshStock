@@ -11,6 +11,11 @@ export const routes: Routes = [
     path: 'register', 
     loadComponent: () => import('./features/auth/register/register').then(m => m.Register) 
   },
+  { 
+    path: 'select-restaurant', 
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/auth/restaurant-selector/restaurant-selector').then(m => m.RestaurantSelector) 
+  },
 
   // Rutas protegidas
   {

@@ -9,8 +9,6 @@ export interface RegisterRequest {
   nombre: string;
   email: string;
   password: string;
-  rol: UserRole;
-  restauranteId: number | null;
 }
 
 // Redundant Usuario interface removed as it's now imported
