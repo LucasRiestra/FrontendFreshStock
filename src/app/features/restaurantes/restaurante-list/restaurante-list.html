@@ -1,6 +1,6 @@
 <div class="header-section">
     <h1>Restaurantes</h1>
-    <button mat-raised-button color="primary" *ngIf="isGlobalAdmin">
+    <button mat-raised-button color="primary" *ngIf="isGlobalAdmin" routerLink="nuevo">
         <mat-icon>add</mat-icon> Nuevo Restaurante
     </button>
 </div>
@@ -36,9 +36,11 @@
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-button color="primary">VER DETALLE</button>
-            <button mat-icon-button color="accent" *ngIf="isGlobalAdmin">
+            <button mat-icon-button color="primary" *ngIf="isGlobalAdmin" matTooltip="Editar">
                 <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" *ngIf="isGlobalAdmin" (click)="deleteRestaurante(res.id!)" matTooltip="Eliminar">
+                <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>
     </mat-card>

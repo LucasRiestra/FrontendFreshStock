@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,12 +10,14 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Restaurante } from '../../../models/restaurante.model';
 import { Usuario, UserRole, PermisoUsuario } from '../../../models/usuario.model';
 import { ActiveStatusPipe } from '../../../shared/pipes';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-restaurante-list',
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -27,6 +30,7 @@ import { ActiveStatusPipe } from '../../../shared/pipes';
 export class RestauranteList implements OnInit {
   private restauranteService = inject(RestauranteService);
   private authService = inject(AuthService);
+  private toastr = inject(ToastrService);
 
   restaurantes: Restaurante[] = [];
   isLoading = true;
@@ -39,7 +43,8 @@ export class RestauranteList implements OnInit {
       this.currentUser = user;
     });
 
-    this.authService.permissions$.subscribe(() => {
+    this.authService.permissions$.subscribe(perms => {
+      if (!perms) return; // No hacer nada si no hay permisos (logout)
       this.isGlobalAdmin = this.authService.isGlobalAdmin();
       this.loadRestaurantes();
     });
@@ -68,6 +73,21 @@ export class RestauranteList implements OnInit {
         error: (err) => {
           console.error('Error loading my restaurants', err);
           this.isLoading = false;
+        }
+      });
+    }
+  }
+
+  deleteRestaurante(id: number): void {
+    if (confirm('¿Está seguro de que desea eliminar este restaurante? Esta acción no se puede deshacer.')) {
+      this.restauranteService.delete(id).subscribe({
+        next: () => {
+          this.toastr.success('Restaurante eliminado', 'Éxito');
+          this.loadRestaurantes();
+        },
+        error: (err) => {
+          console.error('Error deleting restaurant', err);
+          this.toastr.error('No se pudo eliminar el restaurante', 'Error');
         }
       });
     }

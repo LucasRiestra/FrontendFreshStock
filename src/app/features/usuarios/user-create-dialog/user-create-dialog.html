@@ -27,6 +27,17 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Restaurantes</mat-label>
+            <mat-select formControlName="restauranteIds" multiple>
+                <mat-option *ngFor="let rest of availableRestaurantes" [value]="rest.id">
+                    {{rest.nombre}}
+                </mat-option>
+            </mat-select>
+            <mat-hint>Puedes seleccionar varios restaurantes</mat-hint>
+            <mat-error *ngIf="userForm.get('restauranteIds')?.hasError('required')">Selecciona al menos un restaurante</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
             <mat-label>Rol en el Restaurante</mat-label>
             <mat-select formControlName="rol">
                 <mat-option *ngFor="let role of availableRoles" [value]="role.value">

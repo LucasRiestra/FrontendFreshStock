@@ -54,31 +54,12 @@ export class Login implements OnInit {
     const credentials = this.loginForm.value;
 
     this.authService.login(credentials).subscribe({
-      next: (permissions) => {
+      next: () => {
         this.isLoading = false;
         this.toastr.success('Bienvenido', 'Inicio de sesión correcto');
-        
-        if (permissions.restaurantes.length > 1) {
-          console.log('Multiple restaurants, going to selector');
-          this.zone.run(() => this.router.navigate(['/select-restaurant']));
-        } else {
-          const target = this.returnUrl === '/login' ? '/restaurantes' : this.returnUrl;
-          console.log('Redirecting to:', target);
-          
-          this.zone.run(() => {
-            console.log('Starting navigation to:', target);
-            this.router.navigateByUrl(target).then(success => {
-              console.log('Navigation result:', success);
-              if (!success) {
-                console.error('Navigation rejected by guards or missing routes. Trying fallback...');
-                this.router.navigate(['/restaurantes']);
-              }
-            }).catch(err => {
-              console.error('Navigation crashed:', err);
-              this.router.navigate(['/restaurantes']);
-            });
-          });
-        }
+
+        const target = this.returnUrl === '/login' ? '/restaurantes' : this.returnUrl;
+        this.zone.run(() => this.router.navigateByUrl(target));
       },
       error: (err) => {
         this.isLoading = false;

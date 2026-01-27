@@ -120,15 +120,7 @@ export class AuthService {
 
   isGlobalAdmin(): boolean {
     const perms = this.permissionsSubject.value;
-    const user = this.currentUserSubject.value;
-
-    if (perms?.puedeCrearRestaurantes) return true;
-    
-    // Legacy fallback for ID 1 or Role "Admin" / 1
-    if (perms?.usuarioId === 1 || user?.id === 1) return true;
-    if (user?.rol === 1 || user?.rol === 'Admin') return true;
-
-    return false;
+    return perms?.puedeCrearRestaurantes ?? false;
   }
 
   public storePermissions(permissions: PermisoUsuario): void {

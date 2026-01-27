@@ -31,23 +31,19 @@ export class UsuarioList implements OnInit {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
-  usuarios: UsuarioRestaurante[] = [];
+  usuarios: any[] = [];
   isLoading = true;
   canCreate = false;
-  displayedColumns: string[] = ['nombre', 'email', 'rol', 'activo', 'acciones'];
+  displayedColumns: string[] = ['nombre', 'email', 'activo', 'acciones'];
 
   ngOnInit(): void {
-    this.authService.selectedRestaurant$.subscribe(restId => {
-      if (restId) {
-        this.loadUsuarios(restId);
-        this.checkPermissions(restId);
-      }
-    });
+    this.checkPermissions();
+    this.loadUsuarios();
   }
 
-  loadUsuarios(restId: number): void {
+  loadUsuarios(): void {
     this.isLoading = true;
-    this.usuarioService.getByRestaurante(restId).subscribe({
+    this.usuarioService.getAll().subscribe({
       next: (data) => {
         this.usuarios = data;
         this.isLoading = false;
@@ -59,15 +55,16 @@ export class UsuarioList implements OnInit {
     });
   }
 
-  checkPermissions(restId: number): void {
+  checkPermissions(): void {
     const perms = this.authService.getPermissionsValue();
     if (perms) {
-      if (perms.puedeCrearRestaurantes) { // Global Admin
+      // SuperAdmin puede crear usuarios
+      if (perms.puedeCrearRestaurantes) {
         this.canCreate = true;
         return;
       }
-      const resPerm = perms.restaurantes.find(r => r.restauranteId === restId);
-      this.canCreate = resPerm?.puedeCrearUsuarios ?? false;
+      // Admin o Gerente de algún restaurante puede crear usuarios
+      this.canCreate = perms.restaurantes.some(r => r.puedeCrearUsuarios);
     }
   }
 
@@ -78,8 +75,7 @@ export class UsuarioList implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const restId = this.authService.getSelectedRestaurantId();
-        if (restId) this.loadUsuarios(restId);
+        this.loadUsuarios();
       }
     });
   }

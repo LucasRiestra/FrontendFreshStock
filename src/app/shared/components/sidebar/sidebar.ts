@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
-import { PermisoRestaurante } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,29 +12,35 @@ import { PermisoRestaurante } from '../../../models/usuario.model';
 })
 export class Sidebar implements OnInit {
   private authService = inject(AuthService);
-  
-  permission: PermisoRestaurante | null = null;
+
   isGlobalAdmin = false;
+  canCreateCategories = false;
+  canCreateProviders = false;
+  canManageInventory = false;
+  canCreateUsers = false;
 
   ngOnInit(): void {
-    this.authService.permissions$.subscribe(() => {
-      this.isGlobalAdmin = this.authService.isGlobalAdmin();
-      this.updateCurrentPermission();
-    });
-
-    this.authService.selectedRestaurant$.subscribe(() => {
-      this.updateCurrentPermission();
+    this.authService.permissions$.subscribe(perms => {
+      if (!perms) return; // No hacer nada si no hay permisos (logout)
+      this.updatePermissions();
     });
   }
 
-  private updateCurrentPermission(): void {
-    const selectedId = this.authService.getSelectedRestaurantId();
+  private updatePermissions(): void {
     const perms = this.authService.getPermissionsValue();
-    
-    if (perms && selectedId) {
-      this.permission = perms.restaurantes.find((r: PermisoRestaurante) => r.restauranteId === selectedId) || null;
+    this.isGlobalAdmin = this.authService.isGlobalAdmin();
+
+    if (perms?.restaurantes?.length) {
+      // Verificar si tiene el permiso en ALGUNO de sus restaurantes
+      this.canCreateCategories = perms.restaurantes.some(r => r.puedeCrearCategorias);
+      this.canCreateProviders = perms.restaurantes.some(r => r.puedeCrearProveedores);
+      this.canManageInventory = perms.restaurantes.some(r => r.puedeGestionarInventario);
+      this.canCreateUsers = perms.restaurantes.some(r => r.puedeCrearUsuarios);
     } else {
-      this.permission = null;
+      this.canCreateCategories = false;
+      this.canCreateProviders = false;
+      this.canManageInventory = false;
+      this.canCreateUsers = false;
     }
   }
 }
