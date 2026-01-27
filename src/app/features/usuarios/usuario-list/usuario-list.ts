@@ -79,4 +79,17 @@ export class UsuarioList implements OnInit {
       }
     });
   }
+
+  deleteUser(id: number): void {
+    this.usuarioService.delete(id).subscribe({
+      next: () => {
+        this.loadUsuarios();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error deleting user', err);
+        this.isLoading = false;
+      }
+    });
+  }
 }

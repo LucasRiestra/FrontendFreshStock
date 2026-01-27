@@ -37,7 +37,7 @@
                 <button mat-icon-button color="primary" *ngIf="canCreate">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" *ngIf="canCreate">
+                <button mat-icon-button color="warn" *ngIf="canCreate" (click)="deleteUser(element.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>
@@ -47,7 +47,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <div class="no-data" *ngIf="usuarios.length === 0">
+    <div class="no-data" *ngIf="!usuarios.length">
         <mat-icon>info</mat-icon>
         <p>No se encontraron usuarios.</p>
     </div>
