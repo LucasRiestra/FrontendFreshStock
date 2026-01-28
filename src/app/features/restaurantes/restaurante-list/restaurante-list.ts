@@ -92,4 +92,17 @@ export class RestauranteList implements OnInit {
       });
     }
   }
+
+  canEdit(restauranteId: number): boolean {
+    if (this.isGlobalAdmin) return true;
+    
+    const perms = this.authService.getPermissionsValue();
+    if (!perms) return false;
+
+    const restPerm = perms.restaurantes.find(p => p.restauranteId === restauranteId);
+    if (!restPerm) return false;
+
+    // Admin (1) and Gerente (2) can edit
+    return restPerm.rol === UserRole.Admin || restPerm.rol === UserRole.Gerente;
+  }
 }

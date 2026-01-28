@@ -1,9 +1,10 @@
 <div class="form-container">
     <mat-card class="form-card">
         <mat-card-header>
-            <mat-icon mat-card-avatar color="primary">person_add</mat-icon>
-            <mat-card-title>Registrar Nuevo Usuario</mat-card-title>
-            <mat-card-subtitle>Cree una cuenta y asígnela a este restaurante</mat-card-subtitle>
+            <mat-icon mat-card-avatar color="primary">{{ isEditMode ? 'person' : 'person_add' }}</mat-icon>
+            <mat-card-title>{{ isEditMode ? 'Editar Usuario' : 'Registrar Nuevo Usuario' }}</mat-card-title>
+            <mat-card-subtitle>{{ isEditMode ? 'Actualice la información del usuario' : 'Cree una cuenta y asígnela a
+                este restaurante' }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -22,9 +23,10 @@
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" class="w-full">
-                    <mat-label>Contraseña Temporal</mat-label>
+                    <mat-label>{{ isEditMode ? 'Cambiar Contraseña (Opcional)' : 'Contraseña Temporal' }}</mat-label>
                     <input matInput formControlName="password" type="password">
-                    <mat-hint>Mínimo 6 caracteres</mat-hint>
+                    <mat-hint>{{ isEditMode ? 'Dejar en blanco para mantener la actual. Mínimo 6 caracteres.' : 'Mínimo
+                        6 caracteres' }}</mat-hint>
                     <mat-error *ngIf="userForm.get('password')?.hasError('required')">Contraseña es
                         requerida</mat-error>
                     <mat-error *ngIf="userForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
@@ -43,7 +45,7 @@
                 <div class="actions">
                     <button mat-button type="button" routerLink="/usuarios" [disabled]="isLoading">Cancelar</button>
                     <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid || isLoading">
-                        {{ isLoading ? 'Guardando...' : 'Crear Usuario' }}
+                        {{ isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Usuario' ) }}
                     </button>
                 </div>
             </form>

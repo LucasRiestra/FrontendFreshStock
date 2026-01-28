@@ -2,8 +2,9 @@
     <mat-card class="form-card">
         <mat-card-header>
             <mat-icon mat-card-avatar color="primary">storefront</mat-icon>
-            <mat-card-title>Nuevo Restaurante</mat-card-title>
-            <mat-card-subtitle>Registre un nuevo establecimiento en el sistema</mat-card-subtitle>
+            <mat-card-title>{{ isEditMode ? 'Editar Restaurante' : 'Nuevo Restaurante' }}</mat-card-title>
+            <mat-card-subtitle>{{ isEditMode ? 'Actualice la información del establecimiento' : 'Registre un nuevo
+                establecimiento en el sistema' }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -31,7 +32,7 @@
                     <button mat-button type="button" routerLink="/restaurantes" [disabled]="isLoading">Cancelar</button>
                     <button mat-raised-button color="primary" type="submit"
                         [disabled]="restauranteForm.invalid || isLoading">
-                        {{ isLoading ? 'Guardando...' : 'Crear Restaurante' }}
+                        {{ isLoading ? 'Guardando...' : (isEditMode ? 'Guardar Cambios' : 'Crear Restaurante') }}
                     </button>
                 </div>
             </form>

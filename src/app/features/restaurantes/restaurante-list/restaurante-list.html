@@ -36,10 +36,12 @@
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-icon-button color="primary" *ngIf="isGlobalAdmin" matTooltip="Editar">
+            <button mat-icon-button color="primary" *ngIf="canEdit(res.id!)" [routerLink]="[res.id, 'editar']"
+                matTooltip="Editar">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" *ngIf="isGlobalAdmin" (click)="deleteRestaurante(res.id!)" matTooltip="Eliminar">
+            <button mat-icon-button color="warn" *ngIf="isGlobalAdmin" (click)="deleteRestaurante(res.id!)"
+                matTooltip="Eliminar">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>

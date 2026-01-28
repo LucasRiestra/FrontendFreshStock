@@ -20,6 +20,8 @@ export interface UsuarioRestaurante {
   rol: UserRole;
   activo: boolean;
   nombreUsuario?: string;
+  email?: string;
+  nombre?: string; // For normalization
   nombreRestaurante?: string;
 }
 
