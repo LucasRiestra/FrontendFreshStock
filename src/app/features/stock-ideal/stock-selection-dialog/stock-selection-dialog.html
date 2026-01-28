@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Asignar Stock Ideal</h2>
+
+<mat-dialog-content>
+    <div class="loader-container" *ngIf="isLoading">
+        <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div *ngIf="!isLoading">
+        <p class="instruction">Seleccione los productos que desea añadir al control de stock ideal de este restaurante.
+        </p>
+
+        <mat-form-field appearance="outline" class="full-width search-field">
+            <mat-label>Buscar producto</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ej: Harina">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <div class="product-list">
+            <div *ngFor="let p of filteredProducts" class="product-item">
+                <div class="info">
+                    <span class="name">{{ p.nombre }}</span>
+                    <span class="unit">{{ p.unidadMedida }}</span>
+                </div>
+                <button mat-stroked-button color="primary" (click)="selectProduct(p)">
+                    <mat-icon>add</mat-icon> Configurar
+                </button>
+            </div>
+        </div>
+
+        <div class="no-results" *ngIf="!filteredProducts.length">
+            No se encontraron productos pendientes de asignar.
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

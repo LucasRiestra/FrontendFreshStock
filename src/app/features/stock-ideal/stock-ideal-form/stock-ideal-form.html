@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>{{ data.id ? 'Editar Stock Ideal' : 'Asignar Stock Ideal' }}</h2>
+
+<mat-dialog-content>
+    <div class="product-info">
+        <h3>{{ data.nombreProducto }}</h3>
+        <p class="text-muted">{{ data.unidadMedida }}</p>
+    </div>
+
+    <form [formGroup]="stockForm" class="stock-form">
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label>Stock Mínimo</mat-label>
+                <input matInput type="number" formControlName="stockMinimo" placeholder="0">
+                <mat-hint>Punto de re-orden</mat-hint>
+                <mat-error *ngIf="stockForm.get('stockMinimo')?.hasError('required')">Requerido</mat-error>
+                <mat-error *ngIf="stockForm.get('stockMinimo')?.hasError('min')">Mínimo 0</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Stock Ideal</mat-label>
+                <input matInput type="number" formControlName="stockIdeal" placeholder="0">
+                <mat-hint>Nivel optimo</mat-hint>
+                <mat-error *ngIf="stockForm.get('stockIdeal')?.hasError('required')">Requerido</mat-error>
+                <mat-error *ngIf="stockForm.get('stockIdeal')?.hasError('min')">Mínimo 0</mat-error>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Stock Máximo</mat-label>
+            <input matInput type="number" formControlName="stockMaximo" placeholder="0">
+            <mat-hint>Capacidad total de almacenamiento</mat-hint>
+            <mat-error *ngIf="stockForm.get('stockMaximo')?.hasError('required')">Requerido</mat-error>
+            <mat-error *ngIf="stockForm.get('stockMaximo')?.hasError('min')">Mínimo 0</mat-error>
+        </mat-form-field>
+
+        <div class="alert alert-warning" *ngIf="stockForm.errors?.['invalidLevels']">
+            El stock mínimo no puede ser mayor que el ideal, y el ideal no puede ser mayor que el máximo.
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="stockForm.invalid || isLoading" (click)="onSave()">
+        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+    </button>
+</mat-dialog-actions>

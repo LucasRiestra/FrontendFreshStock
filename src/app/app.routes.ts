@@ -43,6 +43,10 @@ export const routes: Routes = [
         path: 'usuarios', 
         loadChildren: () => import('./features/usuarios/usuarios-module').then(m => m.UsuariosModule) 
       },
+      {
+        path: 'stock-ideal',
+        loadChildren: () => import('./features/stock-ideal/stock-ideal-routes').then(m => m.STOCK_IDEAL_ROUTES)
+      }
     ]
   },
 
