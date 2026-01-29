@@ -69,8 +69,22 @@ export class CategoriaForm implements OnInit {
       // Update
       this.categoriaService.update(this.data.id, { ...catData, id: this.data.id }).subscribe({
         next: () => {
-          this.toastr.success('Categoría actualizada correctamente');
-          this.dialogRef.close(true);
+          if (restauranteId) {
+            this.categoriaService.asignarARestaurante(this.data.id, restauranteId).subscribe({
+              next: () => {
+                this.toastr.success('Categoría actualizada y asignada correctamente');
+                this.dialogRef.close(true);
+              },
+              error: (err) => {
+                console.error(err);
+                this.toastr.warning('Categoría actualizada, pero hubo un error en la asignación');
+                this.dialogRef.close(true);
+              }
+            });
+          } else {
+            this.toastr.success('Categoría actualizada correctamente');
+            this.dialogRef.close(true);
+          }
         },
         error: (err) => {
           console.error(err);

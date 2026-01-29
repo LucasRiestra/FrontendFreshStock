@@ -72,8 +72,22 @@ export class ProveedorForm implements OnInit {
       // Update
       this.proveedorService.update(this.data.id, { ...providerData, id: this.data.id }).subscribe({
         next: () => {
-          this.toastr.success('Proveedor actualizado correctamente');
-          this.dialogRef.close(true);
+          if (restauranteId) {
+            this.proveedorService.asignarARestaurante(this.data.id, restauranteId).subscribe({
+              next: () => {
+                this.toastr.success('Proveedor actualizado y asignado correctamente');
+                this.dialogRef.close(true);
+              },
+              error: (err) => {
+                console.error(err);
+                this.toastr.warning('Proveedor actualizado, pero hubo un error en la asignación');
+                this.dialogRef.close(true);
+              }
+            });
+          } else {
+            this.toastr.success('Proveedor actualizado correctamente');
+            this.dialogRef.close(true);
+          }
         },
         error: (err) => {
           console.error(err);

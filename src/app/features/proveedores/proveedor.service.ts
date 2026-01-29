@@ -34,4 +34,8 @@ export class ProveedorService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  asignarARestaurante(proveedorId: number, restauranteId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/asignar/${proveedorId}/${restauranteId}`, {});
+  }
 }
