@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ data.id ? 'Editar' : 'Nueva' }} Categoría</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="categoriaForm" class="form-container">
+        <mat-form-field appearance="outline" class="full-width" *ngIf="isGlobalAdmin">
+            <mat-label>Restaurante (Opcional)</mat-label>
+            <mat-select formControlName="restauranteId">
+                <mat-option [value]="null">Global (Ninguna)</mat-option>
+                <mat-option *ngFor="let rest of restaurantes" [value]="rest.id">
+                    {{ rest.nombre }}
+                </mat-option>
+            </mat-select>
+            <mat-hint>Si no selecciona un restaurante, la categoría será global.</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: Bebidas, Carnes, Limpieza...">
+            <mat-error *ngIf="categoriaForm.get('nombre')?.hasError('required')">El nombre es requerido</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="categoriaForm.invalid || isLoading" (click)="onSave()">
+        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+    </button>
+</mat-dialog-actions>

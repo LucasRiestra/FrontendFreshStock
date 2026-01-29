@@ -1,0 +1,105 @@
+<div class="header-section">
+    <h1>Importador de Productos (Excel)</h1>
+    <div class="actions">
+        <button mat-stroked-button color="primary" (click)="downloadTemplate()">
+            <mat-icon>download</mat-icon> Descargar Plantilla
+        </button>
+    </div>
+</div>
+
+<mat-card class="form-card">
+    <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">upload_file</mat-icon>
+        <mat-card-title>Cargar Productos</mat-card-title>
+        <mat-card-subtitle>Suba un archivo Excel para importar productos masivamente</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form [formGroup]="importForm" class="import-form">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Restaurante Destino</mat-label>
+                <mat-select formControlName="restauranteId" (selectionChange)="onRestaurantChange($event.value)">
+                    <mat-option *ngFor="let rest of restaurantes" [value]="rest.id">
+                        {{ rest.nombre }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="importForm.get('restauranteId')?.hasError('required')">Requerido</mat-error>
+                <mat-hint *ngIf="!isGlobalAdmin">Restaurante asignado automáticamente</mat-hint>
+            </mat-form-field>
+
+            <div class="selectors-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Categoría</mat-label>
+                    <mat-select formControlName="categoriaId">
+                        <mat-option *ngFor="let cat of categorias" [value]="cat.id">
+                            {{ cat.nombre }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint *ngIf="categorias.length === 0 && importForm.get('restauranteId')?.value">
+                        No hay categorías en este restaurante
+                    </mat-hint>
+                    <mat-error *ngIf="importForm.get('categoriaId')?.hasError('required')">Requerido</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Proveedor</mat-label>
+                    <mat-select formControlName="proveedorId">
+                        <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                            {{ prov.nombre }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint *ngIf="proveedores.length === 0 && importForm.get('restauranteId')?.value">
+                        No hay proveedores en este restaurante
+                    </mat-hint>
+                    <mat-error *ngIf="importForm.get('proveedorId')?.hasError('required')">Requerido</mat-error>
+                </mat-form-field>
+
+                <button mat-icon-button (click)="loadDependentData(importForm.get('restauranteId')?.value)"
+                    type="button" matTooltip="Refrescar listas" style="align-self: center; margin-bottom: 20px;">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+
+            <div class="file-upload-section" [class.has-file]="selectedFile" (click)="fileInput.click()">
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                    style="display: none;">
+
+                <mat-icon class="upload-icon">{{ selectedFile ? 'description' : 'cloud_upload' }}</mat-icon>
+                <div class="upload-text">
+                    <span *ngIf="!selectedFile">Haga clic o arrastre un archivo Excel aquí</span>
+                    <span *ngIf="selectedFile">{{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(2) }}
+                        KB)</span>
+                </div>
+                <button mat-button color="primary" type="button" *ngIf="!selectedFile">Seleccionar Archivo</button>
+                <button mat-icon-button color="warn" type="button" *ngIf="selectedFile" (click)="removeFile($event)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+            <mat-checkbox formControlName="actualizarExistentes" color="primary">
+                Actualizar productos si ya existen (por coincidencia de nombre)
+            </mat-checkbox>
+        </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" [disabled]="importForm.invalid || !selectedFile || isLoading"
+            (click)="onPreview()">
+            <mat-icon *ngIf="!isLoading">visibility</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+            <span>&nbsp;{{ isLoading ? 'Procesando...' : 'Ver Vista Previa' }}</span>
+        </button>
+    </mat-card-actions>
+</mat-card>
+
+<mat-divider style="margin: 2rem 0;"></mat-divider>
+
+<div class="instructions-section">
+    <h3>Instrucciones de Importación</h3>
+    <ul>
+        <li>Descargue la plantilla oficial para asegurar que el formato sea correcto.</li>
+        <li>El archivo debe ser un Excel (.xlsx o .xls).</li>
+        <li>Los campos <strong>Nombre</strong> y <strong>UnidadMedida</strong> son obligatorios.</li>
+        <li>Los productos se asignarán automáticamente al restaurante actualmente seleccionado.</li>
+    </ul>
+</div>

@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>Vista Previa de Importación</h2>
+
+<mat-dialog-content>
+    <div class="summary-cards">
+        <mat-card class="summary-item total">
+            <span class="value">{{ data.preview.totalFilas }}</span>
+            <span class="label">Filas detectadas</span>
+        </mat-card>
+        <mat-card class="summary-item new">
+            <span class="value text-success">{{ data.preview.productosNuevos }}</span>
+            <span class="label">Nuevos productos</span>
+        </mat-card>
+        <mat-card class="summary-item exist">
+            <span class="value text-primary">{{ data.preview.productosExistentes }}</span>
+            <span class="label">Existentes</span>
+        </mat-card>
+        <mat-card class="summary-item error" [class.has-errors]="data.preview.filasConError > 0">
+            <span class="value text-danger">{{ data.preview.filasConError }}</span>
+            <span class="label">Con errores</span>
+        </mat-card>
+    </div>
+
+    <!-- Errores de Validación -->
+    <div class="error-section" *ngIf="data.preview.errores.length > 0">
+        <h3><mat-icon color="warn">report_problem</mat-icon> Errores de Formato</h3>
+        <div class="error-list">
+            <div class="error-item" *ngFor="let err of data.preview.errores">
+                <strong>Fila {{ err.fila }}:</strong> {{ err.mensaje }} (Columna: {{ err.columna }})
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Productos -->
+    <div class="products-section">
+        <h3>Productos a Procesar</h3>
+        <div class="table-container mat-elevation-z1">
+            <table mat-table [dataSource]="data.preview.productos">
+                <ng-container matColumnDef="fila">
+                    <th mat-header-cell *matHeaderCellDef> Fila </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.fila }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let p">
+                        {{ p.nombre }}
+                        <span class="badge badge-new" *ngIf="p.esNuevo">Nuevo</span>
+                        <span class="badge badge-update" *ngIf="!p.esNuevo">Actualizar</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="unidad">
+                    <th mat-header-cell *matHeaderCellDef> Unidad </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.unidadMedida }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="costo">
+                    <th mat-header-cell *matHeaderCellDef> Costo </th>
+                    <td mat-cell *matCellDef="let p"> {{ p.costoUnitario | currency:'EUR' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="estado">
+                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                    <td mat-cell *matCellDef="let p">
+                        <mat-icon color="warn" *ngIf="p.tieneError" [matTooltip]="p.mensajeError">error</mat-icon>
+                        <mat-icon style="color: green" *ngIf="!p.tieneError">check_circle</mat-icon>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.row-error]="row.tieneError"></tr>
+            </table>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary"
+        [disabled]="isLoading || (data.preview.productosNuevos === 0 && !data.actualizarExistentes)"
+        (click)="onConfirm()">
+        {{ isLoading ? 'Importando...' : 'Confirmar Importación' }}
+    </button>
+</mat-dialog-actions>

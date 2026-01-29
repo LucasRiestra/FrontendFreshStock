@@ -4,8 +4,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CategoriaService } from '../categoria.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Categoria } from '../../../models/categoria.model';
+import { CategoriaForm } from '../categoria-form/categoria-form';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-categoria-list',
@@ -15,22 +20,38 @@ import { Categoria } from '../../../models/categoria.model';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './categoria-list.html',
   styleUrl: './categoria-list.css',
 })
 export class CategoriaList implements OnInit {
   private categoriaService = inject(CategoriaService);
+  private authService = inject(AuthService);
+  private dialog = inject(MatDialog);
+  private toastr = inject(ToastrService);
+
   categorias: Categoria[] = [];
   isLoading = true;
+  selectedRestaurantId: number | null = null;
 
   ngOnInit(): void {
-    this.loadCategorias();
+    this.authService.selectedRestaurant$.subscribe(id => {
+      this.selectedRestaurantId = id;
+      this.loadCategorias();
+    });
   }
 
   loadCategorias(): void {
-    this.categoriaService.getAll().subscribe({
+    this.isLoading = true;
+    
+    const obs$ = (this.selectedRestaurantId)
+      ? this.categoriaService.getByRestaurante(this.selectedRestaurantId)
+      : this.categoriaService.getAll();
+
+    obs$.subscribe({
       next: (data) => {
         this.categorias = data;
         this.isLoading = false;
@@ -40,5 +61,33 @@ export class CategoriaList implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  openForm(categoria?: Categoria): void {
+    const dialogRef = this.dialog.open(CategoriaForm, {
+      width: '400px',
+      data: categoria || {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCategorias();
+      }
+    });
+  }
+
+  onDelete(categoria: Categoria): void {
+    if (confirm(`¿Está seguro de eliminar la categoría ${categoria.nombre}?`)) {
+      this.categoriaService.delete(categoria.id!).subscribe({
+        next: () => {
+          this.toastr.success('Categoría eliminada');
+          this.loadCategorias();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.error('Error al eliminar la categoría');
+        }
+      });
+    }
   }
 }

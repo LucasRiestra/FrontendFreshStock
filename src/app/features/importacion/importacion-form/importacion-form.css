@@ -1,0 +1,89 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.form-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.import-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.selectors-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.file-upload-section {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+    position: relative;
+    gap: 1rem;
+}
+
+.file-upload-section:hover {
+    border-color: var(--primary-color, #3f51b5);
+    background-color: #f0f2ff;
+}
+
+.file-upload-section.has-file {
+    border-color: #4caf50;
+    background-color: #f1f8e9;
+    padding: 2rem;
+}
+
+.upload-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    color: #999;
+}
+
+.has-file .upload-icon {
+    color: #4caf50;
+}
+
+.upload-text {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.instructions-section {
+    max-width: 800px;
+    margin: 2rem auto;
+    color: #555;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.instructions-section h3 {
+    margin-top: 0;
+}
+
+.instructions-section ul {
+    padding-left: 1.5rem;
+}
+
+.instructions-section li {
+    margin-bottom: 0.5rem;
+}

@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ data.id ? 'Editar' : 'Nuevo' }} Proveedor</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="proveedorForm" class="form-container">
+        <mat-form-field appearance="outline" class="full-width" *ngIf="isGlobalAdmin">
+            <mat-label>Restaurante (Opcional)</mat-label>
+            <mat-select formControlName="restauranteId">
+                <mat-option [value]="null">Global (Ninguno)</mat-option>
+                <mat-option *ngFor="let rest of restaurantes" [value]="rest.id">
+                    {{ rest.nombre }}
+                </mat-option>
+            </mat-select>
+            <mat-hint>Si no selecciona un restaurante, el proveedor será global.</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: Coca-Cola Spain">
+            <mat-error *ngIf="proveedorForm.get('nombre')?.hasError('required')">El nombre es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="proveedor@ejemplo.com">
+            <mat-error *ngIf="proveedorForm.get('email')?.hasError('email')">Email no válido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono" placeholder="Ej: 600123456">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contacto / Dirección</mat-label>
+            <textarea matInput formControlName="contacto"
+                placeholder="Persona de contacto o dirección física"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="proveedorForm.invalid || isLoading" (click)="onSave()">
+        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+    </button>
+</mat-dialog-actions>

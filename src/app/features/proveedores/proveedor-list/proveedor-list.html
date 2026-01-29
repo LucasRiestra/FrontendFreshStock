@@ -1,11 +1,12 @@
 <div class="header-section">
     <h1>Proveedores</h1>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="openForm()">
         <mat-icon>add</mat-icon> Nuevo Proveedor
     </button>
 </div>
 
 <div class="loader-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
     <p>Cargando proveedores...</p>
 </div>
 
@@ -13,23 +14,25 @@
     <mat-card class="proveedor-card" *ngFor="let prov of proveedores">
         <mat-card-header>
             <mat-card-title>{{ prov.nombre }}</mat-card-title>
-            <mat-card-subtitle>{{ prov.email }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ prov.email || 'Sin email' }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
             <div class="info-row" *ngIf="prov.telefono">
-                <span>Tel: {{ prov.telefono }}</span>
+                <mat-icon>phone</mat-icon>
+                <span>{{ prov.telefono }}</span>
             </div>
             <div class="info-row" *ngIf="prov.contacto">
-                <span>Dir: {{ prov.contacto }}</span>
+                <mat-icon>location_on</mat-icon>
+                <span>{{ prov.contacto }}</span>
             </div>
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" (click)="openForm(prov)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn">
+            <button mat-icon-button color="warn" (click)="onDelete(prov)">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>

@@ -15,6 +15,10 @@ export class ProveedorService {
     return this.http.get<Proveedor[]>(this.apiUrl);
   }
 
+  getByRestaurante(restauranteId: number): Observable<Proveedor[]> {
+    return this.http.get<Proveedor[]>(`${this.apiUrl}/restaurante/${restauranteId}`);
+  }
+
   create(proveedor: CreateProveedor): Observable<Proveedor> {
     return this.http.post<Proveedor>(this.apiUrl, proveedor);
   }

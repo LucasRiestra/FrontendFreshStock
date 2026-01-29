@@ -46,6 +46,10 @@ export const routes: Routes = [
       {
         path: 'stock-ideal',
         loadChildren: () => import('./features/stock-ideal/stock-ideal-routes').then(m => m.STOCK_IDEAL_ROUTES)
+      },
+      {
+        path: 'importacion',
+        loadChildren: () => import('./features/importacion/importacion-routes').then(m => m.IMPORTACION_ROUTES)
       }
     ]
   },

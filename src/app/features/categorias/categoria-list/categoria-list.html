@@ -1,11 +1,12 @@
 <div class="header-section">
     <h1>Categorías</h1>
-    <button mat-raised-button color="primary">
+    <button mat-raised-button color="primary" (click)="openForm()">
         <mat-icon>add</mat-icon> Nueva Categoría
     </button>
 </div>
 
 <div class="loader-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
     <p>Cargando categorías...</p>
 </div>
 
@@ -19,10 +20,10 @@
         </mat-card-header>
 
         <mat-card-actions align="end">
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" (click)="openForm(cat)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn">
+            <button mat-icon-button color="warn" (click)="onDelete(cat)">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>
