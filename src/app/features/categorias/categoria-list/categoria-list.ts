@@ -36,8 +36,11 @@ export class CategoriaList implements OnInit {
   categorias: Categoria[] = [];
   isLoading = true;
   selectedRestaurantId: number | null = null;
+  isGlobalAdmin = false;
 
   ngOnInit(): void {
+    this.isGlobalAdmin = this.authService.isGlobalAdmin();
+
     this.authService.selectedRestaurant$.subscribe(id => {
       this.selectedRestaurantId = id;
       this.loadCategorias();
@@ -46,10 +49,14 @@ export class CategoriaList implements OnInit {
 
   loadCategorias(): void {
     this.isLoading = true;
-    
-    const obs$ = (this.selectedRestaurantId)
-      ? this.categoriaService.getByRestaurante(this.selectedRestaurantId)
-      : this.categoriaService.getAll();
+
+    // SuperAdmin siempre ve todas las categorías
+    // Gerente solo ve las de su restaurante
+    const obs$ = this.isGlobalAdmin
+      ? this.categoriaService.getAll()
+      : this.selectedRestaurantId
+        ? this.categoriaService.getByRestaurante(this.selectedRestaurantId)
+        : this.categoriaService.getAll();
 
     obs$.subscribe({
       next: (data) => {

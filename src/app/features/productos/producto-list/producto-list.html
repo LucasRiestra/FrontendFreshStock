@@ -1,15 +1,10 @@
-<div class="header-section">
-    <h1>Productos</h1>
-    <button mat-raised-button color="primary">
+<div class="list-header">
+    <button mat-raised-button color="primary" (click)="openForm()">
         <mat-icon>add</mat-icon> Nuevo Producto
     </button>
 </div>
 
-<div class="loader-container" *ngIf="isLoading">
-    <p>Cargando productos...</p>
-</div>
-
-<div class="cards-grid" *ngIf="!isLoading">
+<div class="cards-grid">
     <mat-card class="producto-card" *ngFor="let prod of productos">
         <mat-card-header>
             <mat-card-title>{{ prod.nombre }}</mat-card-title>
@@ -33,10 +28,10 @@
         </mat-card-content>
 
         <mat-card-actions align="end">
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" (click)="openForm(prod)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn">
+            <button mat-icon-button color="warn" (click)="onDelete(prod)">
                 <mat-icon>delete</mat-icon>
             </button>
         </mat-card-actions>
@@ -44,6 +39,6 @@
 
     <div class="no-data" *ngIf="productos.length === 0">
         <mat-icon>inventory_2</mat-icon>
-        <p>No se encontraron productos.</p>
+        <p>No se encontraron productos para este proveedor.</p>
     </div>
 </div>

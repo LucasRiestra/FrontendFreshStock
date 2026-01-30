@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Categoria, CreateCategoria } from '../../models/categoria.model';
+import { Categoria, CreateCategoria, UpdateCategoria } from '../../models/categoria.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class CategoriaService {
     return this.http.post<Categoria>(`${this.apiUrl}/crear-y-asignar/${restauranteId}`, categoria);
   }
 
-  update(id: number, categoria: Partial<Categoria>): Observable<void> {
+  update(id: number, categoria: UpdateCategoria): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, categoria);
   }
 

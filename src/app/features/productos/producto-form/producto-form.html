@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>{{ data?.id ? 'Editar' : 'Nuevo' }} Producto</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="productoForm" class="form-container">
+        <!-- Nombre del Producto -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" placeholder="Ej: Coca-Cola 330ml">
+            <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">El nombre es requerido</mat-error>
+        </mat-form-field>
+
+        <div style="display: flex; gap: 1rem;">
+            <!-- Unidad de Medida -->
+            <mat-form-field appearance="outline" style="flex: 1;">
+                <mat-label>Unidad de Medida</mat-label>
+                <input matInput formControlName="unidadMedida" placeholder="Ej: Unidad, Kg, Litro">
+                <mat-error *ngIf="productoForm.get('unidadMedida')?.hasError('required')">Requerido</mat-error>
+            </mat-form-field>
+
+            <!-- Stock Mínimo -->
+            <mat-form-field appearance="outline" style="flex: 1;">
+                <mat-label>Stock Mínimo</mat-label>
+                <input type="number" matInput formControlName="stockMinimo">
+                <mat-error *ngIf="productoForm.get('stockMinimo')?.hasError('required')">Requerido</mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Costo Unitario -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Costo Unitario</mat-label>
+            <input type="number" matInput formControlName="costoUnitario">
+            <span matPrefix>$&nbsp;</span>
+            <mat-error *ngIf="productoForm.get('costoUnitario')?.hasError('required')">El costo es requerido</mat-error>
+        </mat-form-field>
+
+        <!-- Selector de Proveedor -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Proveedor</mat-label>
+            <mat-select formControlName="proveedorId">
+                <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                    {{ prov.nombre }}
+                </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="proveedores.length === 0">No hay proveedores disponibles</mat-hint>
+            <mat-error *ngIf="productoForm.get('proveedorId')?.hasError('required')">Debe seleccionar un
+                proveedor</mat-error>
+        </mat-form-field>
+
+        <!-- Selector de Categoría -->
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Categoría</mat-label>
+            <mat-select formControlName="categoriaId">
+                <mat-option *ngFor="let cat of categorias" [value]="cat.id">
+                    {{ cat.nombre }}
+                </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="categorias.length === 0">No hay categorías disponibles</mat-hint>
+            <mat-error *ngIf="productoForm.get('categoriaId')?.hasError('required')">Debe seleccionar una
+                categoría</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="productoForm.invalid || isLoading" (click)="onSave()">
+        {{ isLoading ? 'Guardando...' : 'Guardar' }}
+    </button>
+</mat-dialog-actions>

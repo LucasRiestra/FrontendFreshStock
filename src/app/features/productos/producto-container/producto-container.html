@@ -1,0 +1,28 @@
+<div class="container-header">
+    <h1>Productos</h1>
+
+    <mat-form-field appearance="outline" class="filter-select">
+        <mat-label>Filtrar por Proveedor</mat-label>
+        <mat-select
+            [(ngModel)]="selectedProveedorId"
+            (selectionChange)="onProveedorChange()"
+            [disabled]="isLoadingProveedores">
+            <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                {{ prov.nombre }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="loader-container" *ngIf="isLoadingProveedores || isLoadingProductos">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando...</p>
+</div>
+
+<div *ngIf="!isLoadingProveedores && !isLoadingProductos">
+    <app-producto-list
+        [productos]="filteredProductos"
+        [selectedProveedorId]="selectedProveedorId"
+        (productoUpdated)="onProductoUpdated()">
+    </app-producto-list>
+</div>

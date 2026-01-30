@@ -36,8 +36,11 @@ export class ProveedorList implements OnInit {
   proveedores: Proveedor[] = [];
   isLoading = true;
   selectedRestaurantId: number | null = null;
+  isGlobalAdmin = false;
 
   ngOnInit(): void {
+    this.isGlobalAdmin = this.authService.isGlobalAdmin();
+
     this.authService.selectedRestaurant$.subscribe(id => {
       this.selectedRestaurantId = id;
       this.loadProveedores();
@@ -46,10 +49,14 @@ export class ProveedorList implements OnInit {
 
   loadProveedores(): void {
     this.isLoading = true;
-    
-    const obs$ = (this.selectedRestaurantId)
-      ? this.proveedorService.getByRestaurante(this.selectedRestaurantId)
-      : this.proveedorService.getAll();
+
+    // SuperAdmin siempre ve todos los proveedores
+    // Gerente solo ve los de su restaurante
+    const obs$ = this.isGlobalAdmin
+      ? this.proveedorService.getAll()
+      : this.selectedRestaurantId
+        ? this.proveedorService.getByRestaurante(this.selectedRestaurantId)
+        : this.proveedorService.getAll();
 
     obs$.subscribe({
       next: (data) => {

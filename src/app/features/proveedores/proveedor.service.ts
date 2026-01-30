@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Proveedor, CreateProveedor } from '../../models/proveedor.model';
+import { Proveedor, CreateProveedor, UpdateProveedor } from '../../models/proveedor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class ProveedorService {
     return this.http.post<Proveedor>(`${this.apiUrl}/crear-y-asignar/${restauranteId}`, proveedor);
   }
 
-  update(id: number, proveedor: Partial<Proveedor>): Observable<void> {
+  update(id: number, proveedor: UpdateProveedor): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, proveedor);
   }
 
