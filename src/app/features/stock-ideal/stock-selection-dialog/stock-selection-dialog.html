@@ -9,9 +9,31 @@
         <p class="instruction">Seleccione los productos que desea añadir al control de stock ideal de este restaurante.
         </p>
 
+        <div class="filters-container">
+            <mat-form-field appearance="outline" class="filter-item">
+                <mat-label>Categoría</mat-label>
+                <mat-select [(ngModel)]="selectedCategoryId" (selectionChange)="applyFilter()">
+                    <mat-option [value]="null">Todas</mat-option>
+                    <mat-option *ngFor="let cat of categorias" [value]="cat.id">
+                        {{ cat.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="filter-item">
+                <mat-label>Proveedor</mat-label>
+                <mat-select [(ngModel)]="selectedProviderId" (selectionChange)="applyFilter()">
+                    <mat-option [value]="null">Todos</mat-option>
+                    <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                        {{ prov.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
         <mat-form-field appearance="outline" class="full-width search-field">
             <mat-label>Buscar producto</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ej: Harina">
+            <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Ej: Harina">
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
 
@@ -21,8 +43,14 @@
                     <span class="name">{{ p.nombre }}</span>
                     <span class="unit">{{ p.unidadMedida }}</span>
                 </div>
-                <button mat-stroked-button color="primary" (click)="selectProduct(p)">
+                <!-- Botón para Configurar (Nuevo) -->
+                <button *ngIf="!isConfigured(p.id!)" mat-stroked-button color="primary" (click)="selectProduct(p)">
                     <mat-icon>add</mat-icon> Configurar
+                </button>
+
+                <!-- Botón para Re-editar (Ya configurado en la sesión) -->
+                <button *ngIf="isConfigured(p.id!)" mat-flat-button color="accent" (click)="selectProduct(p)">
+                    <mat-icon>check_circle</mat-icon> Configurado
                 </button>
             </div>
         </div>
@@ -34,5 +62,5 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cerrar</button>
+    <button mat-button (click)="close()">Cerrar</button>
 </mat-dialog-actions>

@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Finalizar Inventario</h2>
+<mat-dialog-content class="dialog-content">
+  <p class="mb-4">¿Está seguro que desea finalizar el inventario? Esta acción no se puede deshacer.</p>
+
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>Notas / Comentarios</mat-label>
+    <textarea matInput [(ngModel)]="notas" rows="3" placeholder="Ej: Inventario inicial de apertura"></textarea>
+  </mat-form-field>
+
+  <div class="update-stock-container">
+    <mat-checkbox [(ngModel)]="actualizarStock" color="primary" class="font-medium">
+      Actualizar Stock del Sistema con estos conteos
+    </mat-checkbox>
+    <p class="help-text">
+      Útil para inventarios iniciales o reseteos totales. Sobrescribirá el stock actual con lo contado.
+    </p>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Finalizar</button>
+</mat-dialog-actions>

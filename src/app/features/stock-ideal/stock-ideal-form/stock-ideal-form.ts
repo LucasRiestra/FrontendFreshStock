@@ -46,7 +46,7 @@ export class StockIdealForm implements OnInit {
     }, { validators: this.levelValidator });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   levelValidator(control: AbstractControl): ValidationErrors | null {
     const min = control.get('stockMinimo')?.value;
@@ -68,9 +68,9 @@ export class StockIdealForm implements OnInit {
     if (this.data.id) {
       // Editar existente
       this.stockIdealService.update(this.data.id, formValue).subscribe({
-        next: () => {
+        next: (response) => {
           this.toastr.success('Stock ideal actualizado', 'Éxito');
-          this.dialogRef.close(true);
+          this.dialogRef.close(response);
         },
         error: (err) => {
           console.error(err);
@@ -86,9 +86,9 @@ export class StockIdealForm implements OnInit {
         restauranteId: this.data.restauranteId
       };
       this.stockIdealService.create(dto).subscribe({
-        next: () => {
+        next: (response) => {
           this.toastr.success('Stock ideal asignado', 'Éxito');
-          this.dialogRef.close(true);
+          this.dialogRef.close(response); // Return the full object including new ID
         },
         error: (err) => {
           console.error(err);

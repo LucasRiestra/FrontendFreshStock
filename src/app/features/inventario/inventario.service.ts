@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { StockLocal } from '../../models/stock.model';
 import { MovimientoInventario, CreateMovimiento } from '../../models/movimiento.model';
+import { FinalizarInventarioDTO, InventarioResponse, CreateInventarioDTO, InventarioResumen } from '../../models/inventario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class InventarioService {
   private http = inject(HttpClient);
   private stockUrl = `${environment.apiUrl}/StockLocal`;
   private movimientoUrl = `${environment.apiUrl}/MovimientoInventario`;
+  private inventarioUrl = `${environment.apiUrl}/inventario`;
 
   // Stock methods
   getAllStock(): Observable<StockLocal[]> {
@@ -41,5 +43,27 @@ export class InventarioService {
 
   registrarMerma(merma: any): Observable<MovimientoInventario> {
     return this.http.post<MovimientoInventario>(`${this.movimientoUrl}/merma`, merma);
+  }
+
+  // Inventario Process Methods (New)
+
+  createInventario(dto: CreateInventarioDTO): Observable<InventarioResponse> {
+    return this.http.post<InventarioResponse>(`${this.inventarioUrl}/nuevo`, dto);
+  }
+
+  getInventarioById(id: number): Observable<InventarioResponse> {
+    return this.http.get<InventarioResponse>(`${this.inventarioUrl}/${id}`);
+  }
+
+  getInventarioActual(restauranteId: number): Observable<InventarioResponse> {
+    return this.http.get<InventarioResponse>(`${this.inventarioUrl}/restaurante/${restauranteId}/actual`);
+  }
+
+  finalizarInventario(id: number, dto: FinalizarInventarioDTO): Observable<InventarioResponse> {
+    return this.http.post<InventarioResponse>(`${this.inventarioUrl}/${id}/finalizar`, dto);
+  }
+
+  getByRestaurante(restauranteId: number): Observable<InventarioResumen[]> {
+    return this.http.get<InventarioResumen[]>(`${this.inventarioUrl}/restaurante/${restauranteId}`);
   }
 }

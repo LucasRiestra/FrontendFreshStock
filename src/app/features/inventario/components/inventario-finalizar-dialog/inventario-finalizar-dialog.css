@@ -1,0 +1,31 @@
+.dialog-content {
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.update-stock-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f9fafb; /* gray-50 */
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.5rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.help-text {
+  font-size: 0.75rem; /* xs */
+  color: #6b7280; /* gray-500 */
+  margin-top: 0.25rem;
+  margin-left: 2rem; /* Indent underneath checkbox text roughly */
+}

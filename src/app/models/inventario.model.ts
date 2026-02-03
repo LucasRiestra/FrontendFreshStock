@@ -10,6 +10,7 @@ export interface CreateInventarioDTO {
 
 export interface FinalizarInventarioDTO {
   notas?: string;
+  actualizarStock?: boolean;
 }
 
 export interface InventarioResponse {

@@ -2,17 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface RestauranteCategoria {
-  id: number;
-  restauranteId: number;
-  categoriaId: number;
-}
-
-export interface CreateRestauranteCategoria {
-  restauranteId: number;
-  categoriaId: number;
-}
+import { RestauranteCategoria, CreateRestauranteCategoria } from '../../models/restauranteCategoria.model';
 
 @Injectable({
   providedIn: 'root'
