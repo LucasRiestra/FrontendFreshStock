@@ -65,6 +65,8 @@ export interface InventarioDetalleResponse {
   categoriaId: number;
   cantidadContada: number;
   cantidadSistema?: number;
+  stockIdeal?: number;
+  stockMinimo?: number;
   diferencia?: number;
   observacion?: string;
   fechaConteo: Date;
@@ -100,6 +102,8 @@ export interface ProductoConteo {
   proveedorId: number;
   categoriaId: number;
   cantidadSistema: number;
+  stockIdeal?: number;
+  stockMinimo?: number;
   cantidadContada?: number;
   yaContado: boolean;
   observacion?: string;

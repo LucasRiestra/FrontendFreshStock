@@ -67,7 +67,7 @@
 
                 <div class="stats grid grid-cols-2 gap-2 mt-4 text-sm">
                     <div class="bg-gray-50 p-2 rounded">
-                        <span class="block text-gray-500">Contados</span>
+                        <span class="block text-gray-500 mb-1">Contados</span>
                         <span class="font-bold text-lg">{{ inv.productosContados }}</span>
                     </div>
                     <!-- More stats can be added here if available in summary -->
@@ -75,6 +75,10 @@
             </mat-card-content>
 
             <mat-card-actions align="end">
+                <button mat-button color="warn" [disabled]="isLoading" (click)="eliminarInventario($event, inv)">
+                    <mat-icon>delete</mat-icon>
+                    ELIMINAR
+                </button>
                 <button mat-button color="primary">
                     {{ inv.estado === EstadoInventario.EnProgreso ? 'CONTINUAR' : 'VER DETALLES' }}
                 </button>

@@ -1,0 +1,127 @@
+<div class="header-section">
+    <div class="title-container">
+        <button mat-icon-button routerLink="/inventario" matTooltip="Volver al historial">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>Inventario: {{ inventario?.nombre }}</h1>
+    </div>
+
+    <div class="actions">
+        <button mat-stroked-button color="primary" (click)="saveProgress()" [disabled]="isLoading || isSaving">
+            <mat-icon *ngIf="!isSaving">save</mat-icon>
+            <mat-spinner diameter="20" *ngIf="isSaving" class="button-spinner"></mat-spinner>
+            Guardar
+        </button>
+        <button mat-stroked-button color="accent" (click)="openAddProductDialog()" [disabled]="isLoading || isSaving">
+            <mat-icon>add</mat-icon>
+            Agregar Producto
+        </button>
+        <button mat-raised-button color="primary" (click)="openFinalizarDialog()" [disabled]="isLoading || isSaving">
+            <mat-icon>check_circle</mat-icon>
+            Finalizar
+        </button>
+    </div>
+</div>
+
+<mat-card class="info-card">
+    <mat-card-content>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="label">Inicio:</span>
+                <span class="value">{{ inventario?.fechaInicio | date:'short' }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Progreso:</span>
+                <span class="value">{{ inventario?.productosContados }} / {{ inventario?.totalProductos }}
+                    ({{ inventario?.porcentajeProgreso }}%)</span>
+            </div>
+            <div class="stat-item">
+                <span class="label">Restaurante:</span>
+                <span class="value">{{ inventario?.nombreRestaurante }}</span>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<div class="filters-container flex gap-4 mb-4" *ngIf="!isLoading">
+    <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Categoría</mat-label>
+        <mat-select [(ngModel)]="selectedCategoryId" (selectionChange)="applyFilter()">
+            <mat-option [value]="null">Todas</mat-option>
+            <mat-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Proveedor</mat-label>
+        <mat-select [(ngModel)]="selectedProviderId" (selectionChange)="applyFilter()">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let prov of proveedores" [value]="prov.id">{{ prov.nombre }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="flex-[2]">
+        <mat-label>Buscar producto</mat-label>
+        <input matInput [(ngModel)]="searchTerm" (keyup)="applyFilter()" placeholder="Ej: Coca Cola">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+</div>
+
+<div class="loader-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando productos...</p>
+</div>
+
+<div class="table-container mat-elevation-z2" *ngIf="!isLoading">
+    <table mat-table [dataSource]="filteredDetalles">
+
+        <ng-container matColumnDef="producto">
+            <th mat-header-cell *matHeaderCellDef> Producto </th>
+            <td mat-cell *matCellDef="let element">
+                <strong>{{element.nombreProducto}}</strong>
+                <br>
+                <small class="text-muted">{{element.nombreCategoria}} | {{element.unidadMedida}}</small>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="stockIdeal">
+            <th mat-header-cell *matHeaderCellDef> Stock Ideal </th>
+            <td mat-cell *matCellDef="let element">
+                <span class="value">{{element.stockIdeal || 0}}</span>
+                <br>
+                <small class="text-muted" *ngIf="element.stockMinimo">Mín: {{element.stockMinimo}}</small>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cantidadSistema">
+            <th mat-header-cell *matHeaderCellDef> Stock Sistema </th>
+            <td mat-cell *matCellDef="let element"> {{element.cantidadSistema}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cantidadContada">
+            <th mat-header-cell *matHeaderCellDef> Conteo Físico </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline" class="count-input">
+                    <input matInput type="number" [(ngModel)]="element.cantidadContada" min="0">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="observacion">
+            <th mat-header-cell *matHeaderCellDef> Observación </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-form-field appearance="outline" class="obs-input">
+                    <input matInput [(ngModel)]="element.observacion" placeholder="Opcional...">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="no-data" *ngIf="!allDetalles.length">
+        <mat-icon>inventory_2</mat-icon>
+        <p>No hay productos para contar en este restaurante.</p>
+    </div>
+</div>

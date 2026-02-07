@@ -13,9 +13,9 @@ import {
   providedIn: 'root'
 })
 export class StockIdealService {
-  private apiUrl = `${environment.apiUrl}/stockidealrestaurante`;
+  private apiUrl = `${environment.apiUrl}/StockIdealRestaurante`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Obtener stock ideal por restaurante
   getByRestaurante(restauranteId: number): Observable<StockIdealRestauranteResponse[]> {

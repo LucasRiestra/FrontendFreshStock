@@ -1,6 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,12 +35,14 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './stock-list.html',
   styleUrl: './stock-list.css',
 })
-export class StockList implements OnInit {
+export class StockList implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private inventarioService = inject(InventarioService);
   private restauranteService = inject(RestauranteService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
+
+  private destroy$ = new Subject<void>();
 
   inventarios: InventarioResumen[] = [];
   isLoading = false;
@@ -57,14 +60,21 @@ export class StockList implements OnInit {
     }
 
     // Suscribirse a cambios de restaurante selecccionado (Header)
-    this.authService.selectedRestaurant$.subscribe(id => {
-      this.selectedRestaurantId = id;
-      if (id) {
-        this.loadInventarios(id);
-      } else {
-        this.inventarios = [];
-      }
-    });
+    this.authService.selectedRestaurant$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(id => {
+        this.selectedRestaurantId = id;
+        if (id) {
+          this.loadInventarios(id);
+        } else {
+          this.inventarios = [];
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadRestaurantes(): void {
@@ -75,11 +85,9 @@ export class StockList implements OnInit {
   }
 
   onRestaurantSelectionChange(event: any): void {
-    // Cuando el SuperAdmin cambia el select en esta pantalla
     const newId = event.value;
     if (newId) {
       this.authService.setSelectedRestaurant(newId);
-      // La suscripción a selectedRestaurant$ se encargará de cargar los inventarios
     }
   }
 
@@ -104,7 +112,6 @@ export class StockList implements OnInit {
       return;
     }
 
-    // Verificar si ya hay uno en progreso
     const enProgreso = this.inventarios.find(i => i.estado === EstadoInventario.EnProgreso);
     if (enProgreso) {
       this.continuarInventario(enProgreso.id);
@@ -118,9 +125,7 @@ export class StockList implements OnInit {
     }).subscribe({
       next: (inv) => {
         this.toastr.success('Nuevo inventario iniciado');
-        // Navegar a la pantalla de conteo (PENDIENTE IMPLEMENTAR RUTA DETALLE)
-        // this.router.navigate(['/inventario', inv.id]);
-        this.loadInventarios(this.selectedRestaurantId!);
+        this.router.navigate(['/inventario/detalle', inv.id]);
       },
       error: (err) => {
         this.toastr.error('No se pudo crear el inventario');
@@ -130,8 +135,27 @@ export class StockList implements OnInit {
   }
 
   continuarInventario(id: number): void {
-    // Navegar a detalle
-    // this.router.navigate(['/inventario', id]);
-    this.toastr.info('Navegando a inventario ' + id + ' (Ruta pendiente)');
+    this.router.navigate(['/inventario/detalle', id]);
+  }
+
+  eliminarInventario(event: Event, inv: InventarioResumen): void {
+    event.stopPropagation(); // Evitar navegar al detalle
+
+    if (confirm(`¿Está seguro de que desea eliminar el inventario "${inv.nombre}"? Esta acción no se puede deshacer.`)) {
+      this.isLoading = true;
+      this.inventarioService.deleteInventario(inv.id).subscribe({
+        next: () => {
+          this.toastr.success('Inventario eliminado correctamente');
+          if (this.selectedRestaurantId) {
+            this.loadInventarios(this.selectedRestaurantId);
+          }
+        },
+        error: (err) => {
+          console.error('Error al eliminar inventario', err);
+          this.toastr.error('No se pudo eliminar el inventario');
+          this.isLoading = false;
+        }
+      });
+    }
   }
 }
