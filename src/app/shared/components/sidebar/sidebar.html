@@ -41,6 +41,11 @@
         <span>Inventario</span>
     </a>
 
+    <a routerLink="/inventario/merma" routerLinkActive="active" class="nav-item" *ngIf="isGlobalAdmin || canManageInventory">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Mermas</span>
+    </a>
+
     <a routerLink="/usuarios" routerLinkActive="active" class="nav-item" *ngIf="isGlobalAdmin || canCreateUsers">
         <i class="fas fa-users"></i>
         <span>Usuarios</span>

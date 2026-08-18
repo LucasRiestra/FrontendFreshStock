@@ -1,6 +1,6 @@
 <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Gestión de Inventarios</h1>
+        <h1 class="text-2xl font-bold text-gray-800">{{ isMermaMode ? 'Registrar Merma' : 'Gestión de Inventarios' }}</h1>
 
         <div class="flex gap-4 items-center">
             <!-- Selector de Restaurante para SuperAdmin -->
@@ -14,7 +14,7 @@
             </mat-form-field>
 
             <button mat-raised-button color="primary" [disabled]="!selectedRestaurantId || isLoading"
-                (click)="iniciarNuevoInventario()">
+                (click)="iniciarNuevoInventario()" *ngIf="!isMermaMode">
                 <mat-icon>add_circle</mat-icon>
                 Nuevo Inventario
             </button>
@@ -35,8 +35,72 @@
         <mat-spinner diameter="40"></mat-spinner>
     </div>
 
-    <!-- State: List -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="selectedRestaurantId && !isLoading">
+    <!-- MERMA FORM MODE -->
+    <div *ngIf="isMermaMode && selectedRestaurantId && !isLoading" class="max-w-2xl">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Registrar Merma</mat-card-title>
+                <mat-card-subtitle>Registre productos dañados, caducados o extraviados</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content class="pt-4">
+                <form [formGroup]="mermaForm" (ngSubmit)="registrarMerma()" class="space-y-4">
+
+                    <!-- Proveedor -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Proveedor</mat-label>
+                        <mat-select formControlName="proveedorId">
+                            <mat-option *ngFor="let prov of proveedores" [value]="prov.id">
+                                {{ prov.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Producto -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Producto</mat-label>
+                        <mat-select formControlName="productoId" [disabled]="!mermaForm.get('proveedorId')?.value">
+                            <mat-option *ngFor="let prod of getProductosByProveedor(mermaForm.get('proveedorId')?.value)"
+                                [value]="prod.id">
+                                {{ prod.nombre }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Cantidad -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput type="number" formControlName="cantidad" min="1">
+                    </mat-form-field>
+
+                    <!-- Tipo Merma -->
+                    <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Tipo de Merma</mat-label>
+                        <mat-select formControlName="tipoMerma">
+                            <mat-option *ngFor="let tipo of tiposMerma" [value]="tipo">
+                                {{ tipo }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Botones -->
+                    <div class="flex gap-2 pt-4">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading || !mermaForm.valid">
+                            <mat-icon>save</mat-icon>
+                            Registrar Merma
+                        </button>
+                        <button mat-stroked-button type="button" (click)="mermaForm.reset()">
+                            <mat-icon>clear</mat-icon>
+                            Limpiar
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- INVENTARIO LIST MODE -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" *ngIf="selectedRestaurantId && !isLoading && !isMermaMode">
 
         <!-- Empty State -->
         <div *ngIf="inventarios.length === 0" class="col-span-full text-center p-8 bg-gray-50 rounded-lg">
